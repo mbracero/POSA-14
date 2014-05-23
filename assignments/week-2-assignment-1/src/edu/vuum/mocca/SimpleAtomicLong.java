@@ -23,7 +23,10 @@ class SimpleAtomicLong
 
     // TODO -- you fill in here by replacing the null with an
     // initialization of ReentrantReadWriteLock.
-    private ReentrantReadWriteLock mRWLock = null;
+    private ReentrantReadWriteLock mRWLock = new ReentrantReadWriteLock();
+    
+    private final Lock readLock = mRWLock.readLock();
+    private final Lock writeLock = mRWLock.writeLock();
 
     /**
      * Creates a new SimpleAtomicLong with the given initial value.
@@ -31,6 +34,7 @@ class SimpleAtomicLong
     public SimpleAtomicLong(long initialValue)
     {
         // TODO -- you fill in here
+        this.mValue = initialValue;
     }
 
     /**
@@ -43,6 +47,9 @@ class SimpleAtomicLong
         long value;
 
         // TODO -- you fill in here
+        this.readLock.lock();
+        value = this.mValue;
+        this.readLock.unlock();
 
         return value;
     }
@@ -57,6 +64,11 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        this.writeLock.lock();
+        this.mValue--;
+        this.writeLock.unlock();
+        
+        value = this.get();
 
         return value;
     }
@@ -71,6 +83,11 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        value = this.get();
+        
+        this.writeLock.lock();
+        this.mValue++;
+        this.writeLock.unlock();
 
         return value;
     }
@@ -85,6 +102,11 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        value = this.get();
+        
+        this.writeLock.lock();
+        this.mValue--;
+        this.writeLock.unlock();
 
         return value;
     }
@@ -99,6 +121,11 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        this.writeLock.lock();
+        this.mValue++;
+        this.writeLock.unlock();
+        
+        value = this.get();
 
         return value;
     }
