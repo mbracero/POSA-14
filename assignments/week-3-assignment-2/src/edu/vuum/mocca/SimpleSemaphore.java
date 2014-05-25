@@ -1,3 +1,5 @@
+package edu.vuum.mocca;
+
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.Condition;
@@ -11,6 +13,23 @@ import java.util.concurrent.locks.Condition;
  *        "NonFair" semaphore semantics, just liked Java Semaphores. 
  */
 public class SimpleSemaphore {
+    /**
+     * Define a ReentrantLock to protect the critical section.
+     */
+    // TODO - you fill in here
+
+    /**
+     * Define a ConditionObject to wait while the number of
+     * permits is 0.
+     */
+    // TODO - you fill in here
+
+    /**
+     * Define a count of the number of available permits.
+     */
+    // TODO - you fill in here.  Make sure that this data member will
+    // ensure its values aren't cached by multiple Threads..
+
     /**
      * Constructor initialize the data members.  
      */
@@ -42,21 +61,13 @@ public class SimpleSemaphore {
     void release() {
         // TODO - you fill in here
     }
-
+    
     /**
-     * Define a ReentrantLock to protect the critical section.
+     * Return the number of permits available.
      */
-    // TODO - you fill in here
-
-    /**
-     * Define a ConditionObject to wait while the number of
-     * permits is 0.
-     */
-    // TODO - you fill in here
-
-    /**
-     * Define a count of the number of available permits.
-     */
-    // TODO - you fill in here
+    public int availablePermits(){
+    	// TODO - you fill in here
+    	return 0; // You will change this value. 
+    }
 }
 
