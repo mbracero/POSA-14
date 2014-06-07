@@ -23,10 +23,7 @@ class SimpleAtomicLong
 
     // TODO -- you fill in here by replacing the null with an
     // initialization of ReentrantReadWriteLock.
-    private ReentrantReadWriteLock mRWLock = new ReentrantReadWriteLock();
-    
-    private final Lock readLock = mRWLock.readLock();
-    private final Lock writeLock = mRWLock.writeLock();
+    private final ReentrantReadWriteLock mRWLock = new ReentrantReadWriteLock();
 
     /**
      * Creates a new SimpleAtomicLong with the given initial value.
@@ -34,7 +31,7 @@ class SimpleAtomicLong
     public SimpleAtomicLong(long initialValue)
     {
         // TODO -- you fill in here
-        this.mValue = initialValue;
+    	mValue = initialValue;
     }
 
     /**
@@ -44,12 +41,13 @@ class SimpleAtomicLong
      */
     public long get()
     {
-        long value;
-
+        long value = 0;
+        
         // TODO -- you fill in here
-        this.readLock.lock();
-        value = this.mValue;
-        this.readLock.unlock();
+        final Lock read = mRWLock.readLock();
+        read.lock();
+        value = mValue;
+        read.unlock();
 
         return value;
     }
@@ -64,11 +62,11 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
-        this.writeLock.lock();
-        this.mValue--;
-        this.writeLock.unlock();
-        
-        value = this.get();
+        final Lock write=  mRWLock.writeLock();
+        write.lock();
+        value = --mValue;
+        write.unlock();
+
 
         return value;
     }
@@ -80,14 +78,13 @@ class SimpleAtomicLong
      */
     public long getAndIncrement()
     {
-        long value = 0;
+        long value = 0 ;
 
         // TODO -- you fill in here
-        value = this.get();
-        
-        this.writeLock.lock();
-        this.mValue++;
-        this.writeLock.unlock();
+        final Lock write=  mRWLock.writeLock();
+        write.lock();
+        value = mValue++;
+        write.unlock();
 
         return value;
     }
@@ -99,14 +96,13 @@ class SimpleAtomicLong
      */
     public long getAndDecrement()
     {
-        long value = 0;
+        long value = 0 ;
 
         // TODO -- you fill in here
-        value = this.get();
-        
-        this.writeLock.lock();
-        this.mValue--;
-        this.writeLock.unlock();
+        final Lock write=  mRWLock.writeLock();
+        write.lock();
+        value = mValue--;
+        write.unlock();
 
         return value;
     }
@@ -121,11 +117,10 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
-        this.writeLock.lock();
-        this.mValue++;
-        this.writeLock.unlock();
-        
-        value = this.get();
+        final Lock write=  mRWLock.writeLock();
+        write.lock();
+        value = ++mValue;
+        write.unlock();
 
         return value;
     }

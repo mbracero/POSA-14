@@ -68,14 +68,11 @@ public class SimpleSemaphore {
         // TODO - you fill in here.
         final Lock l = this.lock;
         l.lock();
-        try {
-            while (permits == 0)
-                noPermits.awaitUninterruptibly();
-            --permits;
-            noPermits.signal();
-        } finally {
-            l.unlock();
-        }
+        while (permits == 0)
+            noPermits.awaitUninterruptibly();
+        --permits;
+        noPermits.signal();
+        l.unlock();
     }
 
     /**
@@ -85,12 +82,9 @@ public class SimpleSemaphore {
         // TODO - you fill in here.
         final Lock l = this.lock;
         l.lock();
-        try {
-            ++permits;
-            noPermits.signal();
-        } finally {
-            l.unlock();
-        }
+        ++permits;
+        noPermits.signal();
+        l.unlock();
     }
 
     /**
