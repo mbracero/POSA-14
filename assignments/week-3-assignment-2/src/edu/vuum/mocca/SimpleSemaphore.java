@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class SimpleSemaphore {
     /**
-     * Define a ReentrantLock to protect the critical section.
+     * Define a Lock to protect the critical section.
      */
     // TODO - you fill in here
     private Lock lock;
@@ -78,7 +78,7 @@ public class SimpleSemaphore {
     /**
      * Return one permit to the semaphore.
      */
-    void release() {
+    public void release() {
         // TODO - you fill in here.
         final Lock l = this.lock;
         l.lock();
