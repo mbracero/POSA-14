@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Messenger;
@@ -48,8 +49,9 @@ public class ThreadPoolDownloadService extends Service {
         // TODO - You fill in here to replace null with a new
         // FixedThreadPool Executor that's configured to use
         // MAX_THREADS. Use a factory method in the Executors class.
+        ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 
-        mExecutor = null;
+        mExecutor = executor;
     }
 
     /**
@@ -73,8 +75,15 @@ public class ThreadPoolDownloadService extends Service {
     	// TODO - You fill in here, by replacing null with an
         // invocation of the appropriate factory method in
         // DownloadUtils that makes a MessengerIntent.
+        Intent intent = new Intent(context, ThreadPoolDownloadService.class);
+        
+        // Set the URI as data in the Intent.
+        intent.setData(Uri.parse(uri));
+        
+        // Create and pass a Messenger as an "extra"
+        intent.putExtra(DownloadUtils.MESSENGER_KEY, new Messenger(handler));
 
-        return null;
+        return intent;
     }
 
     /**
@@ -92,8 +101,17 @@ public class ThreadPoolDownloadService extends Service {
         // helper method from the DownloadUtils class that downloads
         // the uri in the intent and returns the file's pathname using
         // a Messenger who's Bundle key is defined by DownloadUtils.MESSENGER_KEY.
-
-        Runnable downloadRunnable = null;
+        
+        Runnable downloadRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // Extract the Messenger.
+                Messenger messenger = (Messenger)
+                        intent.getExtras().get(DownloadUtils.MESSENGER_KEY);
+                
+                DownloadUtils.downloadAndRespond(getBaseContext(), intent.getData(), messenger);
+            }
+        };
 
         mExecutor.execute(downloadRunnable);
       
