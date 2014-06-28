@@ -47,6 +47,7 @@ public class LoginActivity extends StoryActivityBase{
 	public static File getLoginFile (Context context) {
 		return StorageUtilities.getOutputMediaFile(context, 	// Line 48
 				StorageUtilities.MEDIA_TYPE_TEXT, 
+				// Add security private for file in SD card
 				StorageUtilities.SECURITY_PRIVATE, //MAX_SECURITY, TODO
 				"login.txt");
 	}

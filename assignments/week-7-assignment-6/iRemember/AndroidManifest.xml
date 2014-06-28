@@ -10,7 +10,7 @@
         android:targetSdkVersion="17" />
 
     <permission android:name="edu.vuum.mocca.custompermission" android:label="custompermission" android:protectionLevel="dangerous"></permission>
-    <!-- TODO -->
+    <!-- TODO create custom permission for sound record activity -->
     
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Line 12 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
