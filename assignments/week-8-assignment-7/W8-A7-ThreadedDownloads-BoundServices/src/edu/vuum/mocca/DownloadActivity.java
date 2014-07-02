@@ -76,7 +76,7 @@ public class DownloadActivity extends DownloadBase {
                 // service parameter into an interface that can be
                 // used to make RPC calls to the Service.
 
-                mDownloadCall = null;
+                mDownloadCall = DownloadCall.Stub.asInterface(service);
             }
 
             /**
@@ -109,7 +109,7 @@ public class DownloadActivity extends DownloadBase {
                 // service parameter into an interface that can be
                 // used to make RPC calls to the Service.
 
-                mDownloadRequest = null;
+                mDownloadRequest = DownloadRequest.Stub.asInterface(service);
             }
 
             /**
@@ -145,7 +145,14 @@ public class DownloadActivity extends DownloadBase {
                 // sendPath().  Please use displayBitmap() defined in
                 // DownloadBase.
 
-                Runnable displayRunnable = null;
+                Runnable displayRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        displayBitmap(imagePathname);
+                    }
+                };
+                
+                runOnUiThread(displayRunnable);
             }
         };
      
@@ -162,12 +169,41 @@ public class DownloadActivity extends DownloadBase {
         case R.id.bound_sync_button:
             // TODO - You fill in here to use mDownloadCall to
             // download the image & then display it.
+            final Uri uriDI = uri;
+            
+            new Thread(new Runnable() {
+                
+                @Override
+                public void run() {
+                    // Call downloadImage and display SYNC                    
+                    try {
+                        final String pathname = mDownloadCall.downloadImage(uriDI);
+                        
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayBitmap(pathname);
+                            }
+                        });
+                        
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
             break;
 
         case R.id.bound_async_button:
             // TODO - You fill in here to call downloadImage() on
             // mDownloadRequest, passing in the appropriate Uri and
             // callback.
+            
+            //Call downloadImage ASYNC
+            try {
+                mDownloadRequest.downloadImage(uri, mDownloadCallback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             break;
         }
     }
